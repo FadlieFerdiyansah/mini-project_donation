@@ -4,45 +4,27 @@ import (
 	"mini_project/helpers"
 	"mini_project/models"
 	"net/http"
-	"os"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 )
 
 func Login(c echo.Context) error {
-	// var pwd string
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 	res, err := models.CheckLogin(email, password)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status":  400,
-			"message": "No record found",
-			"data":    nil,
-		})
+		return c.JSON(http.StatusBadRequest, helpers.Response(http.StatusBadRequest, "No record found", nil))
 	}
 
 	if !res {
-		return echo.ErrUnauthorized
+		return c.JSON(http.StatusBadRequest, helpers.Response(http.StatusBadRequest, "There's something went wrong", nil))
 	}
 
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["email"] = email
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	token, err := helpers.CreateToken(email)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"message": err.Error(),
-		})
+		c.JSON(http.StatusInternalServerError, helpers.Response(http.StatusInternalServerError, err.Error(), nil))
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Logged in",
-		"data":    t,
-	})
+	return c.JSON(http.StatusOK, helpers.Response(http.StatusOK, "Login successfully", token))
 }
 
 func GenerateHashPassword(c echo.Context) error {
