@@ -14,13 +14,5 @@ func Init() *echo.Echo {
 	p.GET("", controllers.Index)
 	p.POST("/create", controllers.Create)
 
-	// e.GET("/about", func(c echo.Context) error {
-	// 	return c.JSON(http.StatusOK, map[string]string{
-	// 		"status":  "200",
-	// 		"message": "Successfully get the data",
-	// 		"data":    "fadlie",
-	// 	})
-	// })
-
 	return e
 }
