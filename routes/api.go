@@ -19,6 +19,11 @@ func Init() *echo.Echo {
 	p.GET("/:id", controllers.Show)
 	p.PUT("/:id/update", controllers.Update, middleware.IsAuthenticated)
 	p.DELETE("/:id/destroy", controllers.Destroy, middleware.IsAuthenticated)
+	p.POST("/:id/donation", controllers.Donation)
+
+	pm := e.Group("payment-method")
+	pm.GET("", controllers.IndexPayment)
+	pm.POST("/create", controllers.CreatePayment, middleware.IsAuthenticated)
 
 	return e
 }
