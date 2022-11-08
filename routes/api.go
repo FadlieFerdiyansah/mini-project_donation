@@ -10,7 +10,8 @@ import (
 func Init() *echo.Echo {
 	e := echo.New()
 	e.POST("/login", controllers.Login)
-	e.GET("/generate-hash", controllers.GenerateHashPassword)
+	e.POST("/register", controllers.Register)
+	// e.GET("/generate-hash", controllers.GenerateHashPassword)
 
 	p := e.Group("programs")
 	p.GET("", controllers.Index)

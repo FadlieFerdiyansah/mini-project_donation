@@ -1,6 +1,6 @@
 package models
 
 type Category struct {
-	ID   uint64 `gorm:"primaryKey;autoIncrement:true"`
-	Name string
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
 }

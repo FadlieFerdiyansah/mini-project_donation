@@ -26,10 +26,3 @@ func Login(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.Response(http.StatusOK, "Login successfully", token))
 }
-
-func GenerateHashPassword(c echo.Context) error {
-	pass := c.FormValue("password")
-
-	hash, _ := helpers.HashPassword(pass)
-	return c.JSON(http.StatusOK, hash)
-}
